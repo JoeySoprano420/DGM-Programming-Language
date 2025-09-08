@@ -1,20 +1,28 @@
-![download](https://github.com/user-attachments/assets/3a679880-e3be-4b50-bbb9-8e7977ccb5a9)# DGM-Programming-Language![Upload<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <!-- Background circle -->
-  <circle cx="256" cy="256" r="240" fill="#1E1E1E" stroke="#00FFFF" stroke-width="10"></circle>
+![download](https://github.com/user-attachments/assets/b535842e-bd4a-406d-87e7-8ced3bf4b082)![Uploading downl<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d001a"></stop>
+      <stop offset="100%" stop-color="#000000"></stop>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"></rect>
 
-  <!-- Dodecagram -->
-  <g stroke="#8A2BE2" stroke-width="14" fill="none" stroke-linejoin="round">
-    <polygon points="256,40 316,130 426,130 346,210 386,320 256,260 126,320 166,210 86,130 196,130"></polygon>
-    <polygon points="256,472 196,382 86,382 166,302 126,192 256,252 386,192 346,302 426,382 316,382"></polygon>
+  <!-- Faint glowing circuit lines -->
+  <g stroke="#00FFFF" stroke-opacity="0.15" stroke-width="2">
+    <line x1="400" y1="0" x2="400" y2="600"></line>
+    <line x1="0" y1="300" x2="800" y2="300"></line>
+    <line x1="100" y1="0" x2="700" y2="600"></line>
+    <line x1="700" y1="0" x2="100" y2="600"></line>
   </g>
 
-  <!-- Core hexagon -->
-  <polygon points="256,180 306,206 306,260 256,286 206,260 206,206" fill="#00FFFF" stroke="#8A2BE2" stroke-width="6"></polygon>
+  <!-- Centered DGM Logo -->
+  <g transform="translate(400,280) scale(1.4)">
+    <!-- Outer circle -->
+    <circle cx="0" cy="0" r="160" fill="none" stroke="#00FFFF" stroke-width="6"></circle>
 
-  <!-- Text -->
-  <text x="50%" y="90%" text-anchor="middle" font-family="monospace" font-size="48" fill="#FFFFFF">DGM</text>
-</svg>
-ing download.svg…]()
+  
+
 
 “Every Instruction Counts — Safe, Contextual, Base-12 Precision.”
 
