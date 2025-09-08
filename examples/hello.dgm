@@ -1,0 +1,3 @@
+func main start
+    call print("Hello, DGM World!")
+end
