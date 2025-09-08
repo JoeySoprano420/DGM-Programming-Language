@@ -1,4 +1,21 @@
-# DGM-Programming-Language
+![download](https://github.com/user-attachments/assets/3a679880-e3be-4b50-bbb9-8e7977ccb5a9)# DGM-Programming-Language![Upload<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="#1E1E1E" stroke="#00FFFF" stroke-width="10"></circle>
+
+  <!-- Dodecagram -->
+  <g stroke="#8A2BE2" stroke-width="14" fill="none" stroke-linejoin="round">
+    <polygon points="256,40 316,130 426,130 346,210 386,320 256,260 126,320 166,210 86,130 196,130"></polygon>
+    <polygon points="256,472 196,382 86,382 166,302 126,192 256,252 386,192 346,302 426,382 316,382"></polygon>
+  </g>
+
+  <!-- Core hexagon -->
+  <polygon points="256,180 306,206 306,260 256,286 206,260 206,206" fill="#00FFFF" stroke="#8A2BE2" stroke-width="6"></polygon>
+
+  <!-- Text -->
+  <text x="50%" y="90%" text-anchor="middle" font-family="monospace" font-size="48" fill="#FFFFFF">DGM</text>
+</svg>
+ing download.svg…]()
+
 “Every Instruction Counts — Safe, Contextual, Base-12 Precision.”
 
 🌌 DGM — The Dodecagram Instruction-Oriented Language
@@ -2110,6 +2127,414 @@ make down
 * Keeps DGM development smooth & repeatable.
 
 ---
+
+## _____
+
+⚡ — let’s finish this setup with a **VSCode Dev Container** configuration.
+This way, anyone can open the repo in **VSCode + Remote Containers (Dev Containers)** and immediately get a DGM-ready environment with Docker, CMake, LLVM, and your compiler prebuilt.
+
+---
+
+# 📂 Folder Structure Update
+
+```
+dgm-lang/
+│
+├── .devcontainer/
+│   ├── devcontainer.json
+│   └── Dockerfile         # (can reuse your main Dockerfile, or a slim variant)
+├── Dockerfile
+├── docker-compose.yml
+├── Makefile
+├── workspace/
+│   ├── hello.dgm
+│   └── safe_add.dgm
+└── ...
+```
+
+---
+
+# 📄 `.devcontainer/devcontainer.json`
+
+```json
+{
+  "name": "DGM Language Dev",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "dgm",
+  "workspaceFolder": "/workspace",
+
+  // Extensions for VSCode
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",       // C++ IntelliSense
+        "llvm-vs-code-extensions.vscode-llvm", // LLVM syntax
+        "ms-vscode.makefile-tools", // Makefile support
+        "streetsidesoftware.code-spell-checker"
+      ]
+    }
+  },
+
+  // Forward useful ports (optional, for networked apps)
+  "forwardPorts": [3000, 8080],
+
+  // Mount local workspace
+  "mounts": [
+    "source=${localWorkspaceFolder}/workspace,target=/workspace,type=bind"
+  ],
+
+  // Run build on container start
+  "postCreateCommand": "cd /opt/dgm/build && make -j4"
+}
+```
+
+---
+
+# 📄 `.devcontainer/Dockerfile` (Optional)
+
+If you don’t want to reuse the top-level `Dockerfile` (e.g., for a lean dev container), you can place a slim version here:
+
+```dockerfile
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LLVM_VERSION=14
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    clang \
+    llvm-$LLVM_VERSION \
+    llvm-$LLVM_VERSION-dev \
+    git \
+    lld \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+```
+
+(If you want the full `dgmc` already built, stick with the root `Dockerfile` + Compose setup.)
+
+---
+
+# 🚀 How to Use
+
+1. Install VSCode extensions:
+
+   * **Dev Containers** (ms-vscode-remote.remote-containers).
+
+2. Open repo in VSCode.
+
+3. Hit **Ctrl+Shift+P → “Dev Containers: Open Folder in Container”**.
+
+4. VSCode will:
+
+   * Spin up your Docker Compose service `dgm`.
+   * Mount your local `workspace/`.
+   * Prebuild the compiler in `/opt/dgm/build`.
+
+5. Open `workspace/hello.dgm`, press **F5** (if configured) or run with:
+
+   ```bash
+   make run file=hello.dgm
+   ```
+
+---
+
+# ✅ Benefits
+
+* **Turnkey Dev Env**: no need to install LLVM/CMake locally.
+* **Consistent Setup**: works the same across Linux, macOS, Windows.
+* **Smart IDE**: IntelliSense, syntax highlighting, and Makefile tasks in VSCode.
+* **Mount Local Files**: edit `.dgm` locally, compile inside container.
+
+---
+
+
+
+---
+
+# 📂 Folder Structure Update
+
+```
+dgm-lang/
+│
+├── .devcontainer/
+│   └── devcontainer.json
+├── .vscode/
+│   ├── tasks.json
+│   └── launch.json
+├── Dockerfile
+├── docker-compose.yml
+├── Makefile
+├── workspace/
+│   ├── hello.dgm
+│   └── safe_add.dgm
+└── ...
+```
+
+---
+
+# 📄 `.vscode/tasks.json`
+
+This defines custom **build/run tasks** for DGM:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "DGM: Compile",
+      "type": "shell",
+      "command": "make compile file=${fileBasename} output=${fileBasenameNoExtension}",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "DGM: Run",
+      "type": "shell",
+      "command": "make run file=${fileBasename}",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "DGM: Emit LLVM IR",
+      "type": "shell",
+      "command": "make emit-llvm file=${fileBasename}",
+      "group": "none",
+      "problemMatcher": []
+    }
+  ]
+}
+```
+
+---
+
+# 📄 `.vscode/launch.json`
+
+This lets you press **F5** to run a `.dgm` program:
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Current .dgm File",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/workspace/${fileBasenameNoExtension}",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/workspace",
+      "preLaunchTask": "DGM: Run",
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb"
+    }
+  ]
+}
+```
+
+---
+
+# 🚀 Workflow in VSCode
+
+1. Open a `.dgm` file (e.g., `hello.dgm`).
+2. Press **Ctrl+Shift+B** → pick `DGM: Compile`.
+
+   * Builds your program inside the container.
+3. Press **F5** (or Run → Start Debugging).
+
+   * VSCode will:
+
+     * Run `DGM: Run` task.
+     * Launch the compiled program (`workspace/hello`).
+     * Attach GDB if debugging is enabled.
+
+---
+
+# ✅ Benefits
+
+* **One-click compile/run**: Press **F5**, no terminal needed.
+* **Flexible**: Can compile only (`DGM: Compile`), run, or emit LLVM IR.
+* **Debugger-ready**: Hooks into GDB (in dev container).
+* **Dev-container friendly**: Works seamlessly with Docker Compose setup.
+
+---
+
+
+⚡ — let’s give `.dgm` its own **VSCode syntax highlighting extension** so your language feels like a first-class citizen.
+We’ll make a simple **TextMate grammar (`.tmLanguage.json`)** packaged as a VSCode extension.
+
+---
+
+# 📂 Folder Structure Update
+
+```
+dgm-lang/
+│
+├── .devcontainer/
+├── .vscode/
+├── syntaxes/
+│   └── dgm.tmLanguage.json
+├── package.json        # extension manifest
+└── ...
+```
+
+---
+
+# 📄 `syntaxes/dgm.tmLanguage.json`
+
+This file defines syntax rules for `.dgm`:
+
+```json
+{
+  "scopeName": "source.dgm",
+  "name": "DGM Language",
+  "fileTypes": ["dgm"],
+  "patterns": [
+    {
+      "match": "\\b(func|start|end|call|return|if|else|branch\\.try|branch\\.heal|branch\\.auto|branch\\.soft)\\b",
+      "name": "keyword.control.dgm"
+    },
+    {
+      "match": "\\b(safe\\.add|safe\\.sub|safe\\.mul|safe\\.div|safe\\.mod|safe\\.and|safe\\.or|safe\\.xor|safe\\.not|safe\\.neg)\\b",
+      "name": "keyword.operator.safe.dgm"
+    },
+    {
+      "match": "\\b(tuple\\.pack|tuple\\.unpack|list\\.append|list\\.remove|list\\.insert|list\\.pop|group\\.spawn|group\\.merge|group\\.split|nest\\.enter|nest\\.exit)\\b",
+      "name": "support.function.data.dgm"
+    },
+    {
+      "match": "\\blanguage\\.(inline|expand|fold|derive|macro|trace|echo|link|infer|delete|replace|redirect|guard|wrap|unwrap|enclose|open|close|defer|future|parallel|sync|pragma|exit)\\b",
+      "name": "support.function.ciam.dgm"
+    },
+    {
+      "match": "\".*?\"",
+      "name": "string.quoted.double.dgm"
+    },
+    {
+      "match": "\\b[0-9]+\\b",
+      "name": "constant.numeric.dgm"
+    },
+    {
+      "match": "--.*$",
+      "name": "comment.line.double-dash.dgm"
+    }
+  ]
+}
+```
+
+---
+
+# 📄 `package.json` (VSCode Extension Manifest)
+
+```json
+{
+  "name": "dgm-syntax",
+  "displayName": "DGM Language Support",
+  "description": "Syntax highlighting for the Dodecagram Instruction-Oriented Language (DGM).",
+  "version": "0.1.0",
+  "publisher": "yourname",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "dgm",
+        "aliases": ["DGM", "dgm"],
+        "extensions": [".dgm"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "dgm",
+        "scopeName": "source.dgm",
+        "path": "./syntaxes/dgm.tmLanguage.json"
+      }
+    ]
+  }
+}
+```
+
+---
+
+# 📄 `language-configuration.json`
+
+Defines editor behaviors (comments, brackets, etc.):
+
+```json
+{
+  "comments": {
+    "lineComment": "--"
+  },
+  "brackets": [
+    ["{", "}"],
+    ["[", "]"],
+    ["(", ")"]
+  ],
+  "autoClosingPairs": [
+    { "open": "\"", "close": "\""},
+    { "open": "(", "close": ")" },
+    { "open": "[", "close": "]" },
+    { "open": "{", "close": "}" }
+  ],
+  "surroundingPairs": [
+    { "open": "\"", "close": "\"" },
+    { "open": "(", "close": ")" },
+    { "open": "[", "close": "]" },
+    { "open": "{", "close": "}" }
+  ]
+}
+```
+
+---
+
+# 🚀 Installing in VSCode
+
+1. Open `dgm-lang/` in VSCode.
+
+2. Run `npm install -g vsce` (VSCode Extension Manager).
+
+3. Package the extension:
+
+   ```bash
+   vsce package
+   ```
+
+   This creates `dgm-syntax-0.1.0.vsix`.
+
+4. Install locally:
+
+   ```bash
+   code --install-extension dgm-syntax-0.1.0.vsix
+   ```
+
+5. Open a `.dgm` file → 🎨 syntax highlighting works!
+
+---
+
+# ✅ Benefits
+
+* Keywords (`func`, `start`, `safe.add`, `language.parallel`) get color-coded.
+* Strings, numbers, and comments are highlighted.
+* Full extension packaging → can publish to VSCode Marketplace later.
+
+---
+
+
+
+
 
 ## _____
 
