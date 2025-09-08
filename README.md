@@ -642,3 +642,51 @@ To experiment with base-12 instruction mapping for symbolic, deterministic debug
 ✅ In short:
 DGM is for people who need instruction-level clarity, arithmetic safety, structured data, and LLVM-backed performance — without sacrificing readability or predictability.
 
+ _____
+
+🧭 Orientation of DGM
+
+Paradigm: Instruction-Oriented (IOP)
+Every construct maps deterministically to a DGM opcode, which in turn maps either directly to LLVM IR or to a CIAM-layered expansion. Unlike object-oriented or purely functional systems, the heart of DGM is the instruction dispatch table — a 1:1 link between the Dodecagram (base-12) index and executable semantics.
+
+Execution Model:
+
+AOT (Ahead-of-Time): All .dgm programs are compiled to LLVM IR, then to native binaries (.exe, .out, etc.).
+
+Optional JIT: Used only for hot swaps, mutations, and CIAM-driven macro inferences.
+
+Virtual Register Memory: Stack and heap are abstracted away; values live in a virtual register file, and the compiler invisibly maps this down to LLVM registers + memory slots.
+
+Safety Layer (50–7B): Adds healing constructs (safe.add, branch.heal, recover) so arithmetic and flow errors never crash execution. These resolve at compile-time when possible, or transparently at runtime.
+
+Data Layer (80–9B): Rich first-class collections (tuples, lists, arrays, groups, nests, pairs) map directly to runtime helpers, but still lower into efficient IR.
+
+CIAM Layer (A0–BB): The “Contextual Inference Abstraction Macro” region is unique to DGM. It encodes higher-order operations — macro expansion, inference, trace, echo, parallel/sync — that get resolved before lowering to LLVM IR. Think of it as the meta-brain of the language.
+
+📚 Why This Mapping Matters
+
+Base-12 Instruction Space:
+
+DGM uses 12×12 grid (144 slots) — perfectly aligned with dodecagram symbolic logic.
+
+This guarantees a bounded, enumerable, and complete ISA, which makes it predictable and instruction-oriented.
+
+LLVM Integration:
+
+Core ops (00–4B) are just LLVM instructions under another name → zero impedance mismatch.
+
+Safe ops, Data ops, and CIAM ops are layered on top of LLVM with runtime + pass annotations.
+
+Error Handling Philosophy:
+
+Instead of raising runtime errors, DGM either auto-heals or redirects flow.
+
+This is why you have branch.heal, recover, and language.assert instead of LLVM’s exceptions.
+
+Readable Yet Machine-Friendly Syntax:
+
+English-leaning keywords (tuple.pack, language.inline)
+
+MLA/Chicago style spacing & indentation rules → designed for structured readability.
+
+CIAM guarantees contextual inference: code never gets ambiguous.
