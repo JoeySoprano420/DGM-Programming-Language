@@ -1,0 +1,9 @@
+dgm-lang/            # project root
+│
+├── Dockerfile       # from previous step
+├── docker-compose.yml
+├── workspace/       # your local DGM programs
+│   ├── hello.dgm
+│   ├── safe_add.dgm
+│   └── ...
+└── ...
