@@ -1,0 +1,10 @@
+Function: main
+  VariableExpr: x
+  NumberExpr: 10
+  VariableExpr: y
+  NumberExpr: 20
+  BinaryExpr: safe.add
+    VariableExpr: x
+    VariableExpr: y
+  CallExpr: print
+    VariableExpr: z
