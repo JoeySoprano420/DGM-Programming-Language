@@ -741,3 +741,100 @@ cd dgm-lang
 mkdir build && cd build
 cmake ..
 make -j4
+
+## _____
+
+🛠 Compilation Pipeline
+
+Lexer → tokens (identifiers, numbers, keywords).
+
+Parser → AST (functions, calls, binary ops).
+
+AST → tree nodes with dump() inspection.
+
+Codegen → LLVM IR with !dgm.opcode metadata.
+
+Runtime → C library (safe arithmetic, tuples, lists, sync).
+
+Driver → CLI dgmc for .dgm → .exe.
+
+🌟 Why DGM?
+
+Instruction-Oriented: every operation is mapped, nothing hidden.
+
+Safe by Default: arithmetic heals instead of crashing.
+
+Structured Data: tuples, lists, and groups are first-class.
+
+Interoperable: FFI/ABI compatibility with C/C++.
+
+Traceable: LLVM IR annotated with DGM opcodes.
+
+Predictable: closed 144-op instruction space.
+
+🏭 Who Uses DGM?
+
+Aerospace & defense — safety-critical navigation software.
+
+Medical devices — overflow-proof, predictable control systems.
+
+Finance — deterministic, auditable arithmetic.
+
+Compiler education — teach IR design and annotation.
+
+Data engineering — tuple/list-native pipelines.
+
+⚡ Performance
+
+Startup: near-instant (AOT compiled).
+
+Execution: LLVM-optimized native binaries.
+
+Runtime: lightweight C library, minimal footprint.
+
+Parallelism: language.parallel/sync for concurrency.
+
+🔐 Security & Safety
+
+Overflow → clamps to safe range.
+
+Divide-by-zero → heals to 0.
+
+Memory model → virtual registers, invisible stack/heap.
+
+Parallelism → controlled parallel/sync primitives.
+
+🧭 Roadmap
+
+🔹 Expand CIAM macros (language.infer, language.trace).
+
+🔹 Full array/group/nest support in runtime.
+
+🔹 True parallelism with threads/fibers.
+
+🔹 REPL mode (JIT execution).
+
+🔹 Formal verification layer.
+
+🔹 dgm-pkg package manager.
+
+📚 Resources
+
+docs/MAPPING.md
+ — full 144-op DGM ↔ LLVM IR mapping.
+
+tests/run_examples.sh
+ — build + run all examples.
+
+examples/
+ — hello, safe arithmetic, tuples, lists, parallelism.
+
+🙌 Why Choose DGM?
+
+Because DGM is instruction-oriented, human-readable, and machine-perfect.
+It was created to prove that a language can be bounded, safe, contextual, and interoperable, all while compiling to LLVM IR with precision annotations.
+
+DGM is where safety meets clarity, and every instruction counts.
+
+## _____
+
