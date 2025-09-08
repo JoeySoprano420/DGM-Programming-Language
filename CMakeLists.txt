@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 project(dgm LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(LLVM REQUIRED CONFIG)
 include_directories(${LLVM_INCLUDE_DIRS})
@@ -16,13 +17,13 @@ add_executable(dgmc
     src/codegen.cpp
     src/runtime.c
     src/driver.cpp
-    src/dgm_pass.cpp
 )
 
 llvm_map_components_to_libnames(llvm_libs
     core
-    irreader
     support
+    irreader
+    native
 )
 
 target_link_libraries(dgmc ${llvm_libs})
