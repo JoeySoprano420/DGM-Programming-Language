@@ -1,0 +1,6 @@
+func main start
+    a = 5
+    b = 9
+    t = tuple.pack(a, b)
+    call print("Packed tuple created")
+end
