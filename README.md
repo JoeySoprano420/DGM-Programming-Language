@@ -690,3 +690,54 @@ English-leaning keywords (tuple.pack, language.inline)
 MLA/Chicago style spacing & indentation rules → designed for structured readability.
 
 CIAM guarantees contextual inference: code never gets ambiguous.
+
+ _____
+
+ # 🌌 DGM — The Dodecagram Instruction-Oriented Language
+
+> **Tagline:** *Every Instruction Counts — Safe, Contextual, Base-12 Precision.*
+
+---
+
+## 📖 Overview
+
+**DGM (Dodecagram Language)** is a next-generation **instruction-oriented programming language**.  
+It unites **human-readable clarity** with **machine-level precision**, mapping every operation to a **base-12 Dodecagram opcode** (144 total).  
+
+- ✅ **Safe arithmetic** (no overflow, no divide-by-zero crashes).  
+- ✅ **Structured data** (tuples, lists, groups, nests).  
+- ✅ **CIAM (Contextual Inference Abstraction Macros)** for contextual expansion.  
+- ✅ **LLVM IR integration** with base-12 **DGM annotations** (`!dgm.opcode`).  
+- ✅ **Interop with C/C++** via ABI and LLVM front end.  
+- ✅ **Portable binaries** for Linux, macOS, Windows.  
+
+---
+
+## 🔢 The 144-Entry Dodecagram
+
+DGM instructions are grouped into four regions:
+
+- **00–4B → LLVM Core Instructions**  
+- **50–7B → Safe Arithmetic & Healing**  
+- **80–9B → Data Structures**  
+- **A0–BB → CIAM & Language Intrinsics**
+
+See [`docs/MAPPING.md`](docs/MAPPING.md) for the **full table**.
+
+---
+
+## ⚙️ Install & Build
+
+### Requirements
+- LLVM (≥ 12.0)
+- Clang
+- CMake (≥ 3.14)
+- C++11 compiler
+
+### Build
+```bash
+git clone https://github.com/yourname/dgm-lang.git
+cd dgm-lang
+mkdir build && cd build
+cmake ..
+make -j4
