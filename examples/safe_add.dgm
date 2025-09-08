@@ -1,0 +1,6 @@
+func main start
+    x = 10
+    y = 20
+    z = safe.add(x, y)
+    call print(z)
+end
