@@ -962,3 +962,370 @@ In short: anything you’d build in C/C++ or Rust can be built in DGM — but wi
 
 ## _____
 
+
+---
+
+# 🛠️ DGM Language — Setup & Operation Requirements
+
+---
+
+## 📦 System Requirements
+
+* **Operating System**:
+
+  * Linux (Ubuntu/Debian/Fedora/Arch recommended)
+  * macOS (Intel or Apple Silicon)
+  * Windows 10/11 (MSVC or MinGW toolchain)
+
+* **Hardware**:
+
+  * CPU: x86-64 or ARM64 (LLVM-supported target)
+  * RAM: 2 GB minimum (4 GB recommended for LLVM builds)
+  * Disk: \~1 GB free space (LLVM + build artifacts)
+
+---
+
+## 🔧 Software Dependencies
+
+### 1. Compiler Toolchain
+
+* **C++11-compatible compiler**:
+
+  * Linux/macOS: `g++` (≥ 7.0) or `clang++` (≥ 6.0)
+  * Windows: MSVC (≥ 2019) or MinGW-w64
+
+### 2. Build System
+
+* **CMake (≥ 3.14)** — required to configure and build the project
+
+### 3. LLVM & Clang
+
+* **LLVM Core libraries** (≥ 12.0 recommended)
+* **Clang** (used for linking runtime + emitting executables)
+* Ensure `llvm-config` is available on `$PATH`
+
+Linux example install:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y llvm clang cmake build-essential
+```
+
+macOS (Homebrew):
+
+```bash
+brew install llvm cmake
+```
+
+Windows:
+
+* Install **LLVM/Clang** from [releases.llvm.org](https://releases.llvm.org).
+* Add LLVM `bin/` folder to `PATH`.
+
+### 4. Pthread Support
+
+* Required for parallel/sync runtime features.
+* Usually built-in on Linux/macOS.
+* On Windows, install **pthreads for Win32** (optional if parallel not used).
+
+---
+
+## 📚 Project-Specific Requirements
+
+* **Source tree**: `dgm-lang/`
+
+  * `include/` (headers)
+  * `src/` (lexer, parser, ast, codegen, runtime, driver)
+  * `examples/` (sample programs)
+  * `docs/` (144-entry mapping)
+  * `tests/` (CI + run script)
+
+* **Runtime linking**:
+
+  * The driver auto-links `runtime.c`.
+  * Requires `clang` or system linker to be installed.
+
+---
+
+## 🚀 Setup & Build Instructions
+
+```bash
+# Clone repo
+git clone https://github.com/yourname/dgm-lang.git
+cd dgm-lang
+
+# Create build folder
+mkdir build && cd build
+
+# Run CMake
+cmake ..
+
+# Compile
+make -j4
+```
+
+This produces the compiler binary: **`dgmc`**
+
+---
+
+## ▶️ Operating the Compiler
+
+* **Compile a program**:
+
+```bash
+./dgmc ../examples/hello.dgm -o hello
+```
+
+* **Run immediately**:
+
+```bash
+./dgmc ../examples/hello.dgm -o hello --run
+```
+
+* **Emit LLVM IR**:
+
+```bash
+./dgmc ../examples/safe_add.dgm --emit-llvm
+```
+
+---
+
+## 🧪 Testing
+
+* Run all example programs:
+
+```bash
+./tests/run_examples.sh
+```
+
+* CI/CD setup is available in `tests/ci.yml` (GitHub Actions).
+
+---
+
+## 📝 Recommended Extras
+
+* **LLVM tools**: `llc`, `opt`, `llvm-dis` for exploring IR and optimizations.
+* **Debugger**: `gdb` or `lldb` for runtime debugging.
+* **Editor support**: VSCode or CLion with CMake/LLVM integration.
+
+---
+
+# ✅ Summary Checklist
+
+1. **OS**: Linux, macOS, or Windows.
+2. **Compiler**: C++11-capable (`clang++`/`g++`/MSVC).
+3. **Build**: CMake ≥ 3.14.
+4. **LLVM & Clang** ≥ 12.0 installed + `llvm-config` in PATH.
+5. **Pthreads** (default on Linux/macOS, install separately on Windows).
+6. **Clone repo**, configure with CMake, build with `make`.
+7. Use `dgmc` to compile/run `.dgm` → `.exe`.
+
+---
+
+This way, anyone can set up **DGM** from scratch, even if they’ve never built a compiler before. 
+
+---
+
+# 🛠️ DGM Language — Step-by-Step Installation Guide
+
+---
+
+## 🐧 Linux (Ubuntu/Debian-based)
+
+1. **Update packages**
+
+```bash
+sudo apt-get update
+```
+
+2. **Install dependencies**
+
+```bash
+sudo apt-get install -y build-essential cmake clang llvm-dev lld
+```
+
+3. **Verify LLVM installation**
+
+```bash
+llvm-config --version
+```
+
+Should show `>= 12.0`.
+
+4. **Clone DGM**
+
+```bash
+git clone https://github.com/yourname/dgm-lang.git
+cd dgm-lang
+```
+
+5. **Build DGM**
+
+```bash
+mkdir build && cd build
+cmake ..
+make -j4
+```
+
+6. **Test hello program**
+
+```bash
+./dgmc ../examples/hello.dgm -o hello --run
+```
+
+✅ Output:
+
+```
+Hello, DGM World!
+```
+
+---
+
+## 🍎 macOS (Homebrew)
+
+1. **Install Homebrew** (if not already installed)
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+2. **Install LLVM + CMake**
+
+```bash
+brew install llvm cmake
+```
+
+3. **Add LLVM to PATH**
+
+```bash
+echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+4. **Verify LLVM**
+
+```bash
+llvm-config --version
+```
+
+5. **Clone & Build DGM**
+
+```bash
+git clone https://github.com/yourname/dgm-lang.git
+cd dgm-lang
+mkdir build && cd build
+cmake -DLLVM_DIR=$(brew --prefix llvm)/lib/cmake/llvm ..
+make -j4
+```
+
+6. **Run Example**
+
+```bash
+./dgmc ../examples/safe_add.dgm -o safe_add --run
+```
+
+✅ Output:
+
+```
+30
+```
+
+---
+
+## 🪟 Windows (MSVC or MinGW)
+
+### Option A: MSVC (Visual Studio)
+
+1. **Install Visual Studio 2019 or newer**
+
+   * Include **Desktop development with C++**.
+
+2. **Install LLVM/Clang for Windows**
+   Download from [https://releases.llvm.org](https://releases.llvm.org).
+   Add LLVM `bin/` folder to `PATH`.
+
+3. **Install CMake**
+   Download from [https://cmake.org/download](https://cmake.org/download) or use `winget`:
+
+   ```powershell
+   winget install Kitware.CMake
+   ```
+
+4. **Clone Repo**
+
+```powershell
+git clone https://github.com/yourname/dgm-lang.git
+cd dgm-lang
+```
+
+5. **Build with CMake (MSVC Generator)**
+
+```powershell
+mkdir build
+cd build
+cmake -G "Visual Studio 16 2019" ..
+cmake --build . --config Release
+```
+
+6. **Run Example**
+
+```powershell
+.\Release\dgmc.exe ..\examples\hello.dgm -o hello --run
+```
+
+---
+
+### Option B: MinGW (Lightweight)
+
+1. **Install MSYS2**
+   Download from [https://www.msys2.org](https://www.msys2.org).
+
+2. **Install Dependencies**
+
+```bash
+pacman -S --needed base-devel mingw-w64-x86_64-toolchain cmake llvm
+```
+
+3. **Build DGM**
+
+```bash
+git clone https://github.com/yourname/dgm-lang.git
+cd dgm-lang
+mkdir build && cd build
+cmake -G "MinGW Makefiles" ..
+mingw32-make -j4
+```
+
+4. **Run Example**
+
+```bash
+dgmc.exe ../examples/tuple_test.dgm -o tuple_test --run
+```
+
+---
+
+## 🧪 Testing All Examples
+
+Once installed, run the bundled test script:
+
+```bash
+./tests/run_examples.sh
+```
+
+Expected output will cycle through all example programs (`hello`, `safe_add`, `tuple_test`, `list_test`, `parallel`).
+
+---
+
+# ✅ Installation Recap
+
+1. Install **C++11 compiler**, **CMake**, and **LLVM (≥ 12.0)**.
+2. Clone the `dgm-lang` repo.
+3. Run `cmake .. && make` (or MSVC/MinGW equivalent).
+4. Compile `.dgm` files with `dgmc`.
+5. Run programs directly with `--run`.
+
+---
+
+
+## _____
+
