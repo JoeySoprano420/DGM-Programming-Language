@@ -1,0 +1,33 @@
+# Makefile for DGM inside Docker Compose
+
+# Default program to compile/run
+file ?= hello.dgm
+output ?= program
+
+# Build the Docker image
+build:
+	docker-compose build
+
+# Start container (detached)
+up:
+	docker-compose up -d
+
+# Stop container
+down:
+	docker-compose down
+
+# Open interactive shell inside DGM container
+shell:
+	docker exec -it dgm-lang /bin/bash
+
+# Compile .dgm → executable (inside container)
+compile:
+	docker exec -it dgm-lang /opt/dgm/build/dgmc /workspace/$(file) -o /workspace/$(output)
+
+# Compile + Run
+run:
+	docker exec -it dgm-lang /opt/dgm/build/dgmc /workspace/$(file) -o /workspace/$(output) --run
+
+# Emit LLVM IR instead of executable
+emit-llvm:
+	docker exec -it dgm-lang /opt/dgm/build/dgmc /workspace/$(file) --emit-llvm
