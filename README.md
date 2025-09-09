@@ -1,30 +1,4 @@
-![download](https://github.com/user-attachments/assets/b535842e-bd4a-406d-87e7-8ced3bf4b082)![Uploading downl<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
-  <!-- Background gradient -->
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#0d001a"></stop>
-      <stop offset="100%" stop-color="#000000"></stop>
-    </linearGradient>
-  </defs>
-  <rect width="800" height="600" fill="url(#bg)"></rect>
-
-  <!-- Faint glowing circuit lines -->
-  <g stroke="#00FFFF" stroke-opacity="0.15" stroke-width="2">
-    <line x1="400" y1="0" x2="400" y2="600"></line>
-    <line x1="0" y1="300" x2="800" y2="300"></line>
-    <line x1="100" y1="0" x2="700" y2="600"></line>
-    <line x1="700" y1="0" x2="100" y2="600"></line>
-  </g>
-
-  <!-- Centered DGM Logo -->
-  <g transform="translate(400,280) scale(1.4)">
-    <!-- Outer circle -->
-    <circle cx="0" cy="0" r="160" fill="none" stroke="#00FFFF" stroke-width="6"></circle>
-
-  
-
-
-“Every Instruction Counts — Safe, Contextual, Base-12 Precision.”
+“Instruction-Orientation At Work”
 
 🌌 DGM — The Dodecagram Instruction-Oriented Language
 
